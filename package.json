@@ -1,0 +1,23 @@
+{
+  "name": "simpleapi",
+  "version": "1.0.0",
+  "description": "simple",
+  "main": "app.js",
+  "scripts": {
+    "test": "ls"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mikedepriest/simplenodeapi.git"
+  },
+  "author": "Mike DePriest",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/mikedepriest/simplenodeapi/issues"
+  },
+  "homepage": "https://github.com/mikedepriest/simplenodeapi#readme",
+  "dependencies": {
+    "body-parser": "^1.18.3",
+    "express": "^4.16.3"
+  }
+}
