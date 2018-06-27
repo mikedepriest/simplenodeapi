@@ -26,5 +26,6 @@
             "SensorId":"28-0316459b64ff",
             "UOM":"F"
         }
-    ]
+    ],
+    "Mode": "Test"
 }
