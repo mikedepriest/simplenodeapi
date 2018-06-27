@@ -1,14 +1,37 @@
 fs = require('fs');
 
 var initialized = false;
+var sensorConfigFile = './sensors.json';
 var sensorConfig;
 var sensorList = [];
-var sensorFile = './sensors.json';
+var sensorDevicePath = '';
+var sensorDevicePathSuffix = '';
 
 var init = function() {
-    sensorConfig = JSON.parse(fs.readFileSync(sensorFile, 'utf8'));
+    sensorConfig = JSON.parse(fs.readFileSync(sensorConfigFile, 'utf8'));
+    sensorDevicePath = sensorConfig.SensorDevicePath;
+    sensorDevicePathSuffix = sensorConfig.SensorDevicePathSuffix;
     sensorList = sensorConfig.SensorConfigs;
     initialized = true;
+};
+
+var newSensor = function() {
+    return {
+        SensorName: 'undefined',
+        SensorDescription: 'undefined',
+        SensorId: 'undefined',
+        UOM: 'C'
+    }
+};
+
+var newSensorReading = function() {
+    return {
+        PublishTimestamp: '1969-12-31T00:00.000',
+        SensorId: 'undefined',
+        SensorName: 'undefined',
+        Temperature: '-9999',
+        UOM: 'C'
+    };
 };
 
 exports.getSensorList = function() {
@@ -27,19 +50,16 @@ exports.getSensorByName = function(name) {
 };
 
 exports.getSensorReadingById = function(id) {
-    var retVal = { 
-        PublishTimestamp: '1969-12-31T00:00.000',
-        SensorId: 'undefined',
-        SensorName: 'undefined',
-        Temperature: '-9999',
-        UOM: 'C' 
-    };
+    var retVal = newSensorReading();
 
     var sensor = exports.getSensorById(id);
     
     if (sensor != undefined) {
+        var ts = new Date();
+        var sensorDeviceFile = sensorDevicePath+'/'+sensor.SensorId+'/'+sensorDevicePathSuffix;
+        var sensorReadingLine = fs.readFileSync(sensorDeviceFile, 'utf8');
         retVal ={ 
-            PublishTimestamp: Date(),
+            PublishTimestamp: ts.toISOString(),
             SensorId: sensor.SensorId,
             SensorName: sensor.SensorName,
             Temperature: '0',

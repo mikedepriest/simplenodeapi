@@ -2,12 +2,7 @@ var Sensors = require('../sensors.js');
 
 var appRouter = function (app) {
 
-    var welcomeMessage = 'pids18b20 API routes: /sensors /sensor/id/:id /sensor/name/:name /sensorreadings /sensorreading/id/:id /sensorreading/name/:name';
-
-    //TODO: read from config file
-    var sensorPath = 'PATH';
-    var sensorDeviceSuffix = 'SUFFIX';
-    
+    var welcomeMessage = 'pids18b20 API routes: /sensors /sensor/id/:id /sensor/name/:name /sensorreadings /sensorreading/id/:id /sensorreading/name/:name';    
 
     app.get("/", function (req, res) {
         res.status(200).send({ message: welcomeMessage });
@@ -21,9 +16,8 @@ var appRouter = function (app) {
     app.get("/sensor/id/:id", function (req, res) {
         var mysensor;
         var mysensorId = req.params.id;
-        var mySensorList = Sensors.getSensorList();
+        var mysensor = Sensors.getSensorById(mysensorId);
 
-        var mysensor = mySensorList.find(function (sensor) { return sensor.SensorId === mysensorId; });
         if (mysensor != undefined)
         {
             res.status(200).send(mysensor);
@@ -37,9 +31,8 @@ var appRouter = function (app) {
     app.get("/sensorreading/id/:id", function (req, res) {
         var mysensor;
         var mysensorId = req.params.id;
-        var mySensorList = Sensors.getSensorList();
+        var mysensor = Sensors.getSensorById(mysensorId);
 
-        var mysensor = mySensorList.find(function (sensor) { return sensor.SensorId === mysensorId; });
         if (mysensor != undefined)
         {
             res.status(200).send(Sensors.getSensorReadingById(id));
@@ -53,9 +46,8 @@ var appRouter = function (app) {
     app.get("/sensor/name/:name", function (req, res) {
         var mysensor;
         var mysensorName = req.params.name;
-        var mySensorList = Sensors.getSensorList();
+        var mysensor = Sensors.getSensorByName(mysensorName);
 
-        var mysensor = mySensorList.find(function (sensor) { return sensor.SensorName === mysensorName; });
         if (mysensor != undefined)
         {
             res.status(200).send(mysensor);
@@ -69,9 +61,8 @@ var appRouter = function (app) {
     app.get("/sensorreading/name/:name", function (req, res) {
         var mysensor;
         var mysensorName = req.params.name;
-        var mySensorList = Sensors.getSensorList();
+        var mysensor = Sensors.getSensorByName(mysensorName);
 
-        var mysensor = mySensorList.find(function (sensor) { return sensor.SensorName === mysensorName; });
         if (mysensor != undefined)
         {
             res.status(200).send(Sensors.getSensorReadingById(mysensor.SensorId));
