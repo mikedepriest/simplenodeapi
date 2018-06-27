@@ -72,6 +72,11 @@ var appRouter = function (app) {
         }
   
     });
+
+    app.get("/sensorreadings", function (req, res) {
+        var mySensorReadingList = Sensors.getSensorReadings();      
+        res.status(200).send(mySensorReadingList);
+    });
   }
 
 module.exports = appRouter;

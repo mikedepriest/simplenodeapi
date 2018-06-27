@@ -93,6 +93,14 @@ exports.getSensorReadingById = function(id) {
             UOM: sensor.UOM 
         };
     }
+    return retVal;
+};
 
+exports.getSensorReadings = function() {
+    var retVal = [];
+    if (!initialized) init();
+    sensorList.forEach(element => {
+        retVal.push(exports.getSensorReadingById(element.SensorId));
+    });
     return retVal;
 };
