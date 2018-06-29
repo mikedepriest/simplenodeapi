@@ -2,7 +2,7 @@ var Sensors = require('../sensors.js');
 
 var appRouter = function (app) {
 
-    var welcomeMessage = 'pids18b20 API routes: /sensors /sensor/id/:id /sensor/name/:name /sensorreadings /sensorreading/id/:id /sensorreading/name/:name';    
+    var welcomeMessage = 'pids18b20 API routes: /sensors /sensors/id/:id /sensors/name/:name /sensorreadings /sensorreadings/id/:id /sensorreadings/name/:name';    
 
     app.get("/", function (req, res) {
         res.status(200).send({ message: welcomeMessage });
@@ -13,7 +13,7 @@ var appRouter = function (app) {
         res.status(200).send(mySensorList);
     });
 
-    app.get("/sensor/id/:id", function (req, res) {
+    app.get("/sensors/id/:id", function (req, res) {
         var mysensor;
         var mysensorId = req.params.id;
         var mysensor = Sensors.getSensorById(mysensorId);
@@ -28,7 +28,7 @@ var appRouter = function (app) {
   
     });
 
-    app.get("/sensorreading/id/:id", function (req, res) {
+    app.get("/sensorreadings/id/:id", function (req, res) {
         var mysensor;
         var mysensorId = req.params.id;
         var mysensor = Sensors.getSensorById(mysensorId);
@@ -43,7 +43,7 @@ var appRouter = function (app) {
   
     });
 
-    app.get("/sensor/name/:name", function (req, res) {
+    app.get("/sensors/name/:name", function (req, res) {
         var mysensor;
         var mysensorName = req.params.name;
         var mysensor = Sensors.getSensorByName(mysensorName);
@@ -58,7 +58,7 @@ var appRouter = function (app) {
   
     });
 
-    app.get("/sensorreading/name/:name", function (req, res) {
+    app.get("/sensorreadings/name/:name", function (req, res) {
         var mysensor;
         var mysensorName = req.params.name;
         var mysensor = Sensors.getSensorByName(mysensorName);
