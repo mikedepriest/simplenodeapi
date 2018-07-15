@@ -32,6 +32,7 @@ var newSensorReading = function() {
         PublishTimestamp: '1969-12-31T00:00.000',
         SensorId: 'undefined',
         SensorName: 'undefined',
+        SensorDescription: 'undefined',
         Temperature: '-9999',
         UOM: 'C'
     };
