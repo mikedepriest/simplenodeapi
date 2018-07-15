@@ -89,6 +89,7 @@ exports.getSensorReadingById = function(id) {
             PublishTimestamp: ts.toISOString(),
             SensorId: sensor.SensorId,
             SensorName: sensor.SensorName,
+            SensorDescription: sensor.SensorDescription,
             Temperature: reading,
             UOM: sensor.UOM 
         };

@@ -7,33 +7,113 @@ var appRouter = function (app) {
         routes: 
         [
             { 
+                method: 'GET',
                 route: '/sensors',
                 description: 'List all configured sensors',
                 returns: 'JSON array'
             },
             {
+                method: 'GET',
                 route: '/sensors/id/:id',
                 description: 'Provide information for a sensor by sensor ID',
                 returns: 'JSON representation of sensor'
             },
             {
+                method: 'GET',
                 route: '/sensors/name/:name',
                 description: 'Provide information for a sensor by sensor name',
                 returns: 'JSON representation of sensor'
             },
-            {   route: '/sensorreadings',
+            {
+                method: 'GET',
+                route: '/sensorreadings',
                 description: 'List sensor readings for all configured sensors',
                 returns: 'JSON array of sensor readings'
             },
             {
+                method: 'GET',
                 route: '/sensorreadings/id/:id',
                 description: 'Provide sensor reading for a sensor by ID',
                 returns: 'JSON representation of sensor reading'
             },
             {
+                method: 'GET',
                 route: '/sensorreadings/name/:name',
                 description: 'Provide sensor reading for a sensor by name',
-                returns: 'JSON representatoin of sensor reading'
+                returns: 'JSON representation of sensor reading'
+            }
+        ],
+        schemas:
+        [
+            {
+                sensor:
+                [
+                    {
+                        attribute: 'SensorId',
+                        description: 'DS18B20 1Wire ID for the sensor',
+                        datatype: 'string',
+                        iskey: 'true'
+                    },
+                    {
+                        attribute: 'SensorName',
+                        description: 'Colloquial short name for sensor',
+                        datatype: 'string',
+                        iskey: 'false'
+                    },
+                    {
+                        attribute: 'SensorDescription',
+                        description: 'Descriptive name for sensor',
+                        datatype: 'string',
+                        iskey: 'false'
+                    },
+                    {
+                        attribute: 'UOM',
+                        description: 'Unit of measure for the sensor temperature reading (C or F)',
+                        datatype: 'string',
+                        iskey: 'false'
+                    }
+                ]
+            },
+            {
+                sensoreading:
+                [
+                    {
+                        attribute: 'SensorId',
+                        description: 'DS18B20 1Wire ID for the sensor',
+                        datatype: 'string',
+                        iskey: 'true'
+                    },
+                    {
+                        attribute: 'SensorName',
+                        description: 'Colloquial short name for sensor',
+                        datatype: 'string',
+                        iskey: 'false'
+                    },
+                    {
+                        attribute: 'SensorDescription',
+                        description: 'Descriptive name for sensor',
+                        datatype: 'string',
+                        iskey: 'false'
+                    },
+                    {
+                        attribute: 'UOM',
+                        description: 'Unit of measure for the current sensor temperature reading (C or F)',
+                        datatype: 'string',
+                        iskey: 'false'
+                    },
+                    {
+                        attribute: 'PublishTimestamp',
+                        description: 'Timestamp of current sensor temperature reading',
+                        datatype: 'string',
+                        iskey: 'false'
+                    },
+                    {
+                        attribute: 'Temperature',
+                        description: 'Value of current sensor temperature reading',
+                        datatype: 'float',
+                        iskey: 'false'
+                    }
+                ]
             }
         ]
     };    
