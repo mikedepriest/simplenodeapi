@@ -7,126 +7,46 @@ var appRouter = function (app) {
         routes: 
         [
             { 
-                method: 'GET',
                 route: '/sensors',
                 description: 'List all configured sensors',
                 returns: 'JSON array'
             },
             {
-                method: 'GET',
                 route: '/sensors/id/:id',
                 description: 'Provide information for a sensor by sensor ID',
                 returns: 'JSON representation of sensor'
             },
             {
-                method: 'GET',
                 route: '/sensors/name/:name',
                 description: 'Provide information for a sensor by sensor name',
                 returns: 'JSON representation of sensor'
             },
-            {
-                method: 'GET',
-                route: '/sensorreadings',
+            {   route: '/sensorreadings',
                 description: 'List sensor readings for all configured sensors',
                 returns: 'JSON array of sensor readings'
             },
             {
-                method: 'GET',
                 route: '/sensorreadings/id/:id',
                 description: 'Provide sensor reading for a sensor by ID',
                 returns: 'JSON representation of sensor reading'
             },
             {
-                method: 'GET',
                 route: '/sensorreadings/name/:name',
                 description: 'Provide sensor reading for a sensor by name',
-                returns: 'JSON representation of sensor reading'
-            }
-        ],
-        schemas:
-        [
-            {
-                sensor:
-                [
-                    {
-                        attribute: 'SensorId',
-                        description: 'DS18B20 1Wire ID for the sensor',
-                        datatype: 'string',
-                        iskey: 'true'
-                    },
-                    {
-                        attribute: 'SensorName',
-                        description: 'Colloquial short name for sensor',
-                        datatype: 'string',
-                        iskey: 'false'
-                    },
-                    {
-                        attribute: 'SensorDescription',
-                        description: 'Descriptive name for sensor',
-                        datatype: 'string',
-                        iskey: 'false'
-                    },
-                    {
-                        attribute: 'UOM',
-                        description: 'Unit of measure for the sensor temperature reading (C or F)',
-                        datatype: 'string',
-                        iskey: 'false'
-                    }
-                ]
-            },
-            {
-                sensoreading:
-                [
-                    {
-                        attribute: 'SensorId',
-                        description: 'DS18B20 1Wire ID for the sensor',
-                        datatype: 'string',
-                        iskey: 'true'
-                    },
-                    {
-                        attribute: 'SensorName',
-                        description: 'Colloquial short name for sensor',
-                        datatype: 'string',
-                        iskey: 'false'
-                    },
-                    {
-                        attribute: 'SensorDescription',
-                        description: 'Descriptive name for sensor',
-                        datatype: 'string',
-                        iskey: 'false'
-                    },
-                    {
-                        attribute: 'UOM',
-                        description: 'Unit of measure for the current sensor temperature reading (C or F)',
-                        datatype: 'string',
-                        iskey: 'false'
-                    },
-                    {
-                        attribute: 'PublishTimestamp',
-                        description: 'Timestamp of current sensor temperature reading',
-                        datatype: 'string',
-                        iskey: 'false'
-                    },
-                    {
-                        attribute: 'Temperature',
-                        description: 'Value of current sensor temperature reading',
-                        datatype: 'float',
-                        iskey: 'false'
-                    }
-                ]
+                returns: 'JSON representatoin of sensor reading'
             }
         ]
     };    
 
     app.get("/", function (req, res) {
         res.set('Content-Type', 'application/json');
-        res.status(200).json(welcomeMessage);
+        res.status(200).json({message: welcomeMessage});
     });
 
     app.get("/sensors", function (req, res) {
         res.set('Content-Type', 'application/json');
         var mySensorList = Sensors.getSensorList();      
-        res.status(200).json(mySensorList);
+        res.status(200).json({sensorList: mySensorList});
     });
 
     app.get("/sensors/id/:id", function (req, res) {
@@ -137,7 +57,7 @@ var appRouter = function (app) {
 
         if (mysensor != undefined)
         {
-            res.status(200).json(mysensor);
+            res.status(200).json({sensor: mysensor});
         } else {
             var errorMessage = 'invalid sensor ID [' + sensorId + ']';
             res.status(400).json({ message: errorMessage });
@@ -153,7 +73,7 @@ var appRouter = function (app) {
 
         if (mysensor != undefined)
         {
-            res.status(200).json(Sensors.getSensorReadingById(id));
+            res.status(200).json({sensorreadings: Sensors.getSensorReadingById(id)});
         } else {
             var errorMessage = 'invalid sensor ID [' + sensorId + ']';
             res.status(400).json({ message: errorMessage });
@@ -169,7 +89,7 @@ var appRouter = function (app) {
 
         if (mysensor != undefined)
         {
-            res.status(200).json(mysensor);
+            res.status(200).json({sensor: mysensor});
         } else {
             var errorMessage = 'invalid sensor name [' + mysensorName + ']';
             res.status(400).json({ message: errorMessage });
@@ -185,7 +105,7 @@ var appRouter = function (app) {
 
         if (mysensor != undefined)
         {
-            res.status(200).json(Sensors.getSensorReadingById(mysensor.SensorId));
+            res.status(200).json({sensor: Sensors.getSensorReadingById(mysensor.SensorId)});
         } else {
             var errorMessage = 'invalid sensor name [' + mysensorName + ']';
             res.status(400).json({ message: errorMessage });
@@ -196,7 +116,7 @@ var appRouter = function (app) {
     app.get("/sensorreadings", function (req, res) {
         res.set('Content-Type', 'application/json');
         var mySensorReadingList = Sensors.getSensorReadings();      
-        res.status(200).json(mySensorReadingList);
+        res.status(200).json({sensorreadings: mySensorReadingList});
     });
   }
 
