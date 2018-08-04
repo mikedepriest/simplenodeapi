@@ -6,25 +6,49 @@
             "SensorName":"Sensor1",
             "SensorDescription":"High (AC)",
             "SensorId":"28-0416514b65ff",
-            "UOM":"F"
+            "UOM":"F",
+            "Max": 100,
+            "UCL": 90,
+            "UWL": 75,
+            "LWL": 60,
+            "LCL": 40,
+            "Min": 0
         },
         {
             "SensorName":"Sensor2",
             "SensorDescription":"Desktop",
             "SensorId":"28-041651547eff",
-            "UOM":"F"
+            "UOM":"F",
+            "Max": 100,
+            "UCL": 90,
+            "UWL": 75,
+            "LWL": 60,
+            "LCL": 40,
+            "Min": 0
         },
         {
             "SensorName":"Sensor3",
             "SensorDescription":"Floor 1",
             "SensorId":"28-0416510d05ff",
-            "UOM":"F"
+            "UOM":"F",
+            "Max": 100,
+            "UCL": 90,
+            "UWL": 75,
+            "LWL": 60,
+            "LCL": 40,
+            "Min": 0
         },
         {
             "SensorName":"Sensor4",
             "SensorDescription":"Floor 2",
             "SensorId":"28-0316459b64ff",
-            "UOM":"F"
+            "UOM":"F",
+            "Max": 100,
+            "UCL": 90,
+            "UWL": 75,
+            "LWL": 60,
+            "LCL": 40,
+            "Min": 0
         }
     ],
     "Mode": "Test"
