@@ -8,37 +8,50 @@ var appRouter = function (app) {
         [
             { 
                 route: '/v1/api',
+                method: 'GET',
                 description: 'List API calls',
                 returns: 'JSON array'
             },
             { 
                 route: '/v1/sensors',
+                method: 'GET',
                 description: 'List all configured sensors',
                 returns: 'JSON array'
             },
             {
                 route: '/v1/sensors/id/:id',
+                method: 'GET',
                 description: 'Provide information for a sensor by sensor ID',
                 returns: 'JSON representation of sensor'
             },
             {
                 route: '/v1/sensors/name/:name',
+                method: 'GET',
                 description: 'Provide information for a sensor by sensor name',
                 returns: 'JSON representation of sensor'
             },
             {   route: '/v1/sensorreadings',
+                method: 'GET',
                 description: 'List sensor readings for all configured sensors',
                 returns: 'JSON array of sensor readings'
             },
             {
                 route: '/v1/sensorreadings/id/:id',
+                method: 'GET',
                 description: 'Provide sensor reading for a sensor by ID',
                 returns: 'JSON representation of sensor reading'
             },
             {
                 route: '/v1/sensorreadings/name/:name',
+                method: 'GET',
                 description: 'Provide sensor reading for a sensor by name',
                 returns: 'JSON representation of sensor reading'
+            },
+            {
+                route: '/v1/sensors/id/:id',
+                method: 'PATCH',
+                description: 'Update sensor information',
+                returns: 'JSON representation of updated sensor'
             }
         ]
     };    
@@ -92,7 +105,7 @@ var appRouter = function (app) {
 
         if (mysensor != undefined)
         {
-            res.status(200).json({sensorreadings: Sensors.getSensorReadingById(id)});
+            res.status(200).json({sensorreadings: Sensors.getSensorReadingById(mysensorId)});
         } else {
             var errorMessage = 'invalid sensor ID [' + sensorId + ']';
             res.status(400).json({ message: errorMessage });
@@ -134,9 +147,38 @@ var appRouter = function (app) {
 
     app.get("/v1/sensorreadings", function (req, res) {
         res.set('Content-Type', 'application/json');
+
         var mySensorReadingList = Sensors.getSensorReadings();      
         res.status(200).json({sensorreadings: mySensorReadingList});
+
+        if (mysensor != undefined)
+        {
+            res.status(200).json({sensor: Sensors.getSensorReadingById(mysensor.SensorId)});
+        } else {
+            var errorMessage = 'invalid sensor name [' + mysensorName + ']';
+            res.status(400).json({ message: errorMessage });
+        }
     });
+
+    app.patch("/v1/sensors/id/:id", function (req, res) {
+        var mysensorId = req.params.id;
+        var mysensor = Sensors.getSensorById(mysensorId);
+        res.set('Content-Type', 'application/json');
+
+        if (mysensor != undefined)
+        {
+            for( let b in req.body ){
+                mysensor[b] = req.body[b];
+            }
+            Sensors.updateSensor(mysensor);
+
+            res.status(200).json({sensor: Sensors.getSensorById(mysensor.SensorId)});
+        } else {
+            var errorMessage = 'invalid sensor ID [' + mysensorId + ']';
+            res.status(400).json({ message: errorMessage });
+        }
+    });
+
   }
 
 module.exports = appRouter;

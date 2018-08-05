@@ -18,12 +18,24 @@ var init = function() {
     initialized = true;
 };
 
+var save = function() {
+    fs.writeFileSync(sensorConfigFile, JSON.stringify(sensorConfig), (err) => {  
+        if (err) throw err;
+    });
+}
+
 var newSensor = function() {
     return {
         SensorName: 'undefined',
         SensorDescription: 'undefined',
         SensorId: 'undefined',
-        UOM: 'C'
+        UOM: 'C',
+        Max: 100,
+        UCL: 90,
+        UWL: 75,
+        LWL: 60,
+        LCL: 40,
+        Min: 0
     }
 };
 
@@ -34,9 +46,23 @@ var newSensorReading = function() {
         SensorName: 'undefined',
         SensorDescription: 'undefined',
         Temperature: '-9999',
-        UOM: 'C'
+        UOM: 'C',
+        Max: 9999,
+        UCL: 0,
+        UWL: 0,
+        LWL: 0,
+        LCL: 0,
+        Min: -9999
     };
 };
+
+exports.updateSensor = function(sensor) {
+    if (!initialized) init();
+    sensorList.map(sen => (sen.SensorId === sensor.SensorId ? sensor : sen));
+    sensorConfig.SensorConfigs = sensorList;
+    save();
+    return(true);
+}
 
 exports.getSensorList = function() {
     if (!initialized) init();
@@ -81,6 +107,11 @@ exports.getSensorReadingById = function(id) {
             // Split across '=' and take the third one as the reading
             var readingArray = sensorReadingLine.split('=');
             var reading = readingArray[2] / 1000;
+            // If in test mode, provide some randomness to the temperature readings
+            if (sensorMode==='Test') {
+                var addsub = ((Math.random() > 0.5) ? 1 : -1);
+                reading = reading + (addsub * 5.0 * Math.random());
+            }
             // If the sensor UOM is F, convert
             if (sensor.UOM==='F') {
                 reading = (1.8 * reading) + 32.0;
@@ -92,7 +123,13 @@ exports.getSensorReadingById = function(id) {
             SensorName: sensor.SensorName,
             SensorDescription: sensor.SensorDescription,
             Temperature: reading,
-            UOM: sensor.UOM 
+            UOM: sensor.UOM,
+            Max: sensor.Max,
+            UCL: sensor.UCL,
+            UWL: sensor.UWL,
+            LWL: sensor.LWL,
+            LCL: sensor.LCL,
+            Min: sensor.Min 
         };
     }
     return retVal;
