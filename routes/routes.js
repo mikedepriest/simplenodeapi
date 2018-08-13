@@ -39,19 +39,19 @@ var appRouter = function (app) {
                 route: '/v1/sensorreadings/id/:id',
                 method: 'GET',
                 description: 'Provide sensor reading for a sensor by ID',
-                returns: 'JSON representation of sensor reading'
+                returns: 'JSON object of a single sensor reading'
             },
             {
                 route: '/v1/sensorreadings/name/:name',
                 method: 'GET',
                 description: 'Provide sensor reading for a sensor by name',
-                returns: 'JSON representation of sensor reading'
+                returns: 'JSON object of sensor reading'
             },
             {
                 route: '/v1/sensors/id/:id',
                 method: 'PATCH',
                 description: 'Update sensor information',
-                returns: 'JSON representation of updated sensor'
+                returns: 'JSON object of updated sensor'
             }
         ]
     };    
@@ -105,7 +105,7 @@ var appRouter = function (app) {
 
         if (mysensor != undefined)
         {
-            res.status(200).json({sensorreadings: Sensors.getSensorReadingById(mysensorId)});
+            res.status(200).json({sensorreading: Sensors.getSensorReadingById(mysensorId)});
         } else {
             var errorMessage = 'invalid sensor ID [' + sensorId + ']';
             res.status(400).json({ message: errorMessage });
@@ -137,7 +137,7 @@ var appRouter = function (app) {
 
         if (mysensor != undefined)
         {
-            res.status(200).json({sensor: Sensors.getSensorReadingById(mysensor.SensorId)});
+            res.status(200).json({sensorreading: Sensors.getSensorReadingById(mysensor.SensorId)});
         } else {
             var errorMessage = 'invalid sensor name [' + mysensorName + ']';
             res.status(400).json({ message: errorMessage });
@@ -151,20 +151,13 @@ var appRouter = function (app) {
         var mySensorReadingList = Sensors.getSensorReadings();      
         res.status(200).json({sensorreadings: mySensorReadingList});
 
-        if (mysensor != undefined)
-        {
-            res.status(200).json({sensor: Sensors.getSensorReadingById(mysensor.SensorId)});
-        } else {
-            var errorMessage = 'invalid sensor name [' + mysensorName + ']';
-            res.status(400).json({ message: errorMessage });
-        }
     });
 
     app.patch("/v1/sensors/id/:id", function (req, res) {
         var mysensorId = req.params.id;
         var mysensor = Sensors.getSensorById(mysensorId);
         res.set('Content-Type', 'application/json');
-
+	console.log('PATCH: '+JSON.stringify(req.params));
         if (mysensor != undefined)
         {
             for( let b in req.body ){
