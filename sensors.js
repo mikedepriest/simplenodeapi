@@ -19,7 +19,7 @@ var init = function() {
 };
 
 var save = function() {
-    fs.writeFileSync(sensorConfigFile, JSON.stringify(sensorConfig), (err) => {  
+    fs.writeFileSync(sensorConfigFile, JSON.stringify(sensorConfig,null,4), (err) => {  
         if (err) throw err;
     });
 }
